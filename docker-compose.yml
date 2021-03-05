@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  web:
+    image: node:15-alpine
+    volumes:
+      - .:$PWD
+    working_dir: $PWD
+    restart: unless-stopped

@@ -1,0 +1,78 @@
+#!/bin/sh
+
+alias errecho="echo 1>&2"
+alias docker_run="docker-compose run --service-ports web"
+alias docker_detached_run="docker-compose run -d --service-ports web"
+alias docker_down="docker-compose down"
+
+help()
+{
+  echo "Usage: bot [COMMAND]"
+  echo
+  echo "Commands:"
+  echo "  start                       checks if is dockerized and starts the bot"
+  echo "  start -d, start --detached  runs docker in detached mode"
+  echo "  docker up, docker-up        starts docker container"
+  echo "  docker down, docker-down    docker-compose down"
+  echo "  help, -h, --help            print this guy"
+}
+
+mkenv()
+{
+  while [ -z "$BOT_TOKEN" ]; do
+    errecho -n "Bot token: "
+    read -r BOT_TOKEN
+
+    # Trim the input
+    BOT_TOKEN="$(echo "$BOT_TOKEN")"
+  done
+
+  echo "BOT_TOKEN=$BOT_TOKEN" > "$PWD/.env"
+}
+
+is_dockerized()
+{
+  test "$(grep -c /docker/ /proc/1/cgroup)" -gt 0
+}
+
+if [ -f "$PWD/.env" ]; then
+  . "$PWD/.env"
+else
+  mkenv
+fi
+
+case "$([ -z "$2" ] && echo "$1" || echo "$1-$2")" in
+  start)
+    if is_dockerized; then
+      yarn
+      BOT_TOKEN="$BOT_TOKEN" node src/index.js
+    else
+      docker_run sh bot start
+    fi
+    ;;
+
+  start--d|start---detached)
+    if is_dockerized; then
+      errecho "start -d must be run outside docker container"
+    else
+      docker_detached_run sh bot start
+    fi
+    ;;
+
+  docker-up)
+    docker_run sh
+    ;;
+
+  docker-down)
+    docker_down
+    ;;
+
+  -h|--help|help)
+    help
+    ;;
+
+  *)
+    help 1>&2
+    exit 64
+    ;;
+esac

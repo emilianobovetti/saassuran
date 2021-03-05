@@ -1,0 +1,21 @@
+{
+  "name": "saassuran",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "repository": "https://github.com/emilianobovetti/saassuran",
+  "author": "Emiliano Bovetti",
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "leven": "^3.1.0",
+    "telegraf": "^4.1.2",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.21.0"
+  }
+}
