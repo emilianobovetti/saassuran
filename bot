@@ -49,7 +49,7 @@ mkenv()
 
 is_dockerized()
 {
-  test "$(grep -c /docker/ /proc/1/cgroup)" -gt 0
+  test -f /.dockerenv
 }
 
 if [ -f "$PWD/.env" ]; then
