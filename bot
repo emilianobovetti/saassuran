@@ -1,9 +1,6 @@
 #!/bin/sh
 
-alias errecho="echo 1>&2"
-alias docker_run="docker compose run --service-ports web"
-alias docker_detached_run="docker compose run -d --service-ports web"
-alias docker_down="docker compose down"
+set -e
 
 help()
 {
@@ -15,6 +12,26 @@ help()
   echo "  docker up, docker-up        starts docker container"
   echo "  docker down, docker-down    docker compose down"
   echo "  help, -h, --help            print this guy"
+}
+
+errecho()
+{
+  echo 1>&2 "$@"
+}
+
+docker_run()
+{
+  docker compose run --rm --service-ports web "$@"
+}
+
+docker_detached_run()
+{
+  docker compose run --rm --service-ports --detach web "$@"
+}
+
+docker_down()
+{
+  docker compose down --remove-orphans
 }
 
 mkenv()
