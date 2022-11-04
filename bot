@@ -1,9 +1,9 @@
 #!/bin/sh
 
 alias errecho="echo 1>&2"
-alias docker_run="docker-compose run --service-ports web"
-alias docker_detached_run="docker-compose run -d --service-ports web"
-alias docker_down="docker-compose down"
+alias docker_run="docker compose run --service-ports web"
+alias docker_detached_run="docker compose run -d --service-ports web"
+alias docker_down="docker compose down"
 
 help()
 {
@@ -13,7 +13,7 @@ help()
   echo "  start                       checks if is dockerized and starts the bot"
   echo "  start -d, start --detached  runs docker in detached mode"
   echo "  docker up, docker-up        starts docker container"
-  echo "  docker down, docker-down    docker-compose down"
+  echo "  docker down, docker-down    docker compose down"
   echo "  help, -h, --help            print this guy"
 }
 
