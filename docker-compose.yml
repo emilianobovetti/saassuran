@@ -1,9 +1,10 @@
-version: '3'
+version: "3"
 
 services:
   web:
-    image: node:alpine
+    build: .
     volumes:
-      - .:$PWD
-    working_dir: $PWD
+      - $PWD:/home/app/src
+    working_dir: /home/app/src
+    command: ["sh", "bot", "start"]
     restart: unless-stopped

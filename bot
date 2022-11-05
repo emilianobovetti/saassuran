@@ -8,9 +8,8 @@ help()
   echo
   echo "Commands:"
   echo "  start                       checks if is dockerized and starts the bot"
-  echo "  start -d, start --detached  runs docker in detached mode"
-  echo "  docker up, docker-up        starts docker container"
-  echo "  docker down, docker-down    docker compose down"
+  echo "  start -d, start --detach    runs docker in detach mode"
+  echo "  stop                        docker compose down"
   echo "  help, -h, --help            print this guy"
 }
 
@@ -19,17 +18,13 @@ errecho()
   echo 1>&2 "$@"
 }
 
-docker_run()
+compose_up()
 {
-  docker compose run --rm --service-ports web "$@"
+  docker compose build --build-arg UID="$(id -u)" --build-arg GID="$(id -g)"
+  docker compose up "$@"
 }
 
-docker_detached_run()
-{
-  docker compose run --rm --service-ports --detach web "$@"
-}
-
-docker_down()
+compose_down()
 {
   docker compose down --remove-orphans
 }
@@ -64,24 +59,20 @@ case "$([ -z "$2" ] && echo "$1" || echo "$1-$2")" in
       yarn
       BOT_TOKEN="$BOT_TOKEN" node src/index.js
     else
-      docker_run sh bot start
+      compose_up
     fi
     ;;
 
-  start--d|start---detached)
+  start--d|start---detach)
     if is_dockerized; then
       errecho "start -d must be run outside docker container"
     else
-      docker_detached_run sh bot start
+      compose_up --detach
     fi
     ;;
 
-  docker-up)
-    docker_run sh
-    ;;
-
-  docker-down)
-    docker_down
+  stop)
+    compose_down
     ;;
 
   -h|--help|help)
