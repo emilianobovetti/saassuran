@@ -5,6 +5,7 @@ import { getCommand, tokenizeText } from './shared.js'
 import { registerUser } from './user.js'
 import { getSessionCommands } from './session.js'
 import { handleWave } from './handleWave.js'
+import { handleSearch } from './handleSearch.js'
 import { handleSummary } from './handleSummary.js'
 import { handleRoll } from './handleRoll.js'
 import { handleNote, handleAllNotes, handleDeleteNote } from './handleNote.js'
@@ -13,7 +14,7 @@ import { handleRetrieveAbout, handleStoreAbout } from './handleAbout.js'
 
 const { BOT_TOKEN } = process.env
 
-if (!BOT_TOKEN) {
+if (BOT_TOKEN == null || BOT_TOKEN === '') {
   console.error('Missing BOT_TOKEN, try BOT_TOKEN="<your token>" node index.js')
   process.exit(1)
 }
@@ -32,6 +33,8 @@ const handleHelp = ctx => ctx.reply(getHelp())
 
 const commands = {
   '/help': handleHelp,
+  '/cerca': handleSearch,
+  '/search': handleSearch,
   '/wave': handleWave,
   '/summary': handleSummary,
   '/riassunto': handleSummary,

@@ -39,7 +39,16 @@ mkenv()
     BOT_TOKEN="$(echo "$BOT_TOKEN")"
   done
 
+  while [ -z "$NOTION_TOKEN" ]; do
+    errecho -n "Notion token: "
+    read -r NOTION_TOKEN
+
+    # Trim the input
+    NOTION_TOKEN="$(echo "$NOTION_TOKEN")"
+  done
+
   echo "BOT_TOKEN=$BOT_TOKEN" > "$PWD/.env"
+  echo "NOTION_TOKEN=$NOTION_TOKEN" >> "$PWD/.env"
 }
 
 is_dockerized()
@@ -57,7 +66,7 @@ case "$([ -z "$2" ] && echo "$1" || echo "$1-$2")" in
   start)
     if is_dockerized; then
       yarn
-      BOT_TOKEN="$BOT_TOKEN" node src/index.js
+      BOT_TOKEN="$BOT_TOKEN" NOTION_TOKEN="$NOTION_TOKEN" node src/index.js
     else
       compose_up
     fi
