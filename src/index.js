@@ -10,6 +10,7 @@ import { handleRoll } from './handleRoll.js'
 import { handleNote, handleAllNotes, handleDeleteNote } from './handleNote.js'
 import { handleCallme } from './handleCallme.js'
 import { handleRetrieveAbout, handleStoreAbout } from './handleAbout.js'
+import { handleBirthday } from './handleBirthday.js'
 
 const { BOT_TOKEN } = process.env
 
@@ -44,6 +45,7 @@ const commands = {
   '/about': handleRetrieveAbout,
   '/ricorda': handleStoreAbout,
   '/remember': handleStoreAbout,
+  '/auguri': handleBirthday,
 }
 
 bot.on('text', ctx => {
