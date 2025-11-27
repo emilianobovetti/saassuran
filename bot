@@ -57,7 +57,7 @@ case "$([ -z "$2" ] && echo "$1" || echo "$1-$2")" in
   start)
     if is_dockerized; then
       yarn
-      BOT_TOKEN="$BOT_TOKEN" node src/index.js
+      BOT_TOKEN="$BOT_TOKEN" exec node src/index.js
     else
       compose_up
     fi
